@@ -108,18 +108,6 @@ var _ = { };
       return uniqueElts;
   };
 
-  _.uniq2 = function (array, isSorted, iterator) {
-      var results = [];
-      var temp;
-      
-      if (isSorted) {
-	  _.each(array, function() {
-	      
-	  });	  
-      }
-  };
-
-
   // Return the results of applying an iterator to each element.
   _.map = function(array, iterator) {
     // map() is a useful primitive iteration function that works a lot
@@ -220,10 +208,32 @@ var _ = { };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
-  _.some = function(collection, iterator) {
+  _.some2 = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
       var someFunc = iterator || _.identity;
+      var anyPassed = false;
+      return _.every(collection, function (val) {
+	  if (anyPassed) {
+	      return true;	      
+	  }  else if (someFunc(val)) {
+	      anyPassed = true;
+	      return true;
+	  } else {
+	      return false;
+	  }
+      });
       
+  };
+
+  _.some = function (collection, iterator) {
+      var truthTest = iterator || _.identity;
+      for (var i = 0, len = collection.length; i < len; i++) {
+	  if (Boolean(truthTest(collection[i]))) {
+	      return true
+	  }
+      }
+
+      return false;
   };
 
 
@@ -246,11 +256,30 @@ var _ = { };
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+      var args = Array.prototype.slice.call(arguments, 1);
+  
+      _.each(args, function (value, index) {
+	  _.each(value, function(propertyValue, propertyName) {
+	      obj[propertyName] = propertyValue;	      
+	  });
+      });
+      return obj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+      var args = Array.prototype.slice.call(arguments, 1);
+
+      _.each(args, function (passedObj, index) {
+	  _.each(passedObj, function (propValue, propName) {
+	      if (!obj.hasOwnProperty(propName)) {
+		  obj[propName] = propValue;
+	      }
+	  });
+      });
+
+      return obj;
   };
 
 
