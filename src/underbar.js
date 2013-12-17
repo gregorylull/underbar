@@ -125,8 +125,12 @@ var _ = { };
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
+      var newArray = [];
+      _.each(array, function(item) {
+	  newArray.push(iterator(item));
+      });
 
-      
+      return newArray;
   };
 
   /*
@@ -149,7 +153,26 @@ var _ = { };
 
   // Calls the method named by methodName on each value in the list.
   // Note: you will nead to learn a bit about .apply to complete this.
-  _.invoke = function(collection, functionOrKey, args) {
+  _.invoke2 = function(collection, functionOrKey, args) {
+     return  _.map(collection, function(item){
+	  if (typeof functionOrKey == "function") {
+	      return functionOrKey.apply(item, args);
+	  } else {
+	      return item[functionOrKey].apply(item, args);
+	  }
+      });
+  };
+
+  _.invoke = function (collection, functionOrKey, args) {
+      if (typeof functionOrKey == "function") {
+	  return _.map(collection, function(item) {
+	      return functionOrKey.apply(item, args);
+	  });
+      } else {
+	  return _.map(collection, function(item) {
+	      return item[functionOrKey].apply(item, args);
+	  });
+      }
   };
 
   // Reduces an array or object to a single value by repetitively calling
@@ -166,6 +189,12 @@ var _ = { };
   //     return total + number;
   //   }, 0); // should be 6
   _.reduce = function(collection, iterator, accumulator) {
+      var results = accumulator || 0;
+      _.each(collection, function (item) {
+	  results = iterator(results, item);
+      });
+
+      return results;
   };
 
   // Determine if the array or object contains a given value (using `===`).
@@ -180,16 +209,21 @@ var _ = { };
     }, false);
   };
 
-
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+      var someFunc = iterator || _.identity;
+      return _.reduce( collection, function(allTrue, item) {
+	  return allTrue && Boolean(someFunc(item));
+      }, true);
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+      var someFunc = iterator || _.identity;
+      
   };
 
 
