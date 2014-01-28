@@ -32,9 +32,9 @@ var _ = { };
       var len = array.length;
 
       if ( n === 0) {
-	  return [];
+          return [];
       } else if ( n > len ) {
-	  return array;
+          return array;
       } else {
       return n === undefined ? array[len - 1] : array.slice(len - n);
       }
@@ -47,13 +47,13 @@ var _ = { };
   // iterator function over each item in the input collection.
   _.each = function(collection, iterator) {
       if (Array.isArray(collection)) {
-	  for (var i = 0, len = collection.length; i < len; i++) {
-	      iterator(collection[i], i, collection);
-	  }
+          for (var i = 0, len = collection.length; i < len; i++) {
+              iterator(collection[i], i, collection);
+          }
       } else {
-	  for (var key in collection) {
-	      iterator(collection[key], key, collection);
-	  }	  
+          for (var key in collection) {
+              iterator(collection[key], key, collection);
+          }
       }
   };
 
@@ -78,9 +78,9 @@ var _ = { };
   _.filter = function(collection, test) {
       var filtered = [];
       _.each(collection, function (item) {
-	  if (test(item)){
-	      filtered.push(item);
-	  }
+          if (test(item)){
+              filtered.push(item);
+          }
       });
 
       return filtered;
@@ -92,7 +92,7 @@ var _ = { };
     // copying code in and modifying it
 
       return _.filter(collection, function(value) {
-	  return !test(value);
+          return !test(value);
       });
   };
 
@@ -100,9 +100,9 @@ var _ = { };
   _.uniq = function(array) {
       var uniqueElts = [];
       _.each(array, function(item){
-	  if (_.indexOf(uniqueElts, item) === -1) {
-	      uniqueElts.push(item);
-	  }
+          if (_.indexOf(uniqueElts, item) === -1) {
+              uniqueElts.push(item);
+          }
       });
 
       return uniqueElts;
@@ -115,7 +115,7 @@ var _ = { };
     // the members, it also maintains an array of results.
       var newArray = [];
       _.each(array, function(item) {
-	  newArray.push(iterator(item));
+          newArray.push(iterator(item));
       });
 
       return newArray;
@@ -143,23 +143,23 @@ var _ = { };
   // Note: you will nead to learn a bit about .apply to complete this.
   _.invoke2 = function(collection, functionOrKey, args) {
      return  _.map(collection, function(item){
-	  if (typeof functionOrKey == "function") {
-	      return functionOrKey.apply(item, args);
-	  } else {
-	      return item[functionOrKey].apply(item, args);
-	  }
+          if (typeof functionOrKey == "function") {
+              return functionOrKey.apply(item, args);
+          } else {
+              return item[functionOrKey].apply(item, args);
+          }
       });
   };
 
   _.invoke = function (collection, functionOrKey, args) {
       if (typeof functionOrKey == "function") {
-	  return _.map(collection, function(item) {
-	      return functionOrKey.apply(item, args);
-	  });
+          return _.map(collection, function(item) {
+              return functionOrKey.apply(item, args);
+          });
       } else {
-	  return _.map(collection, function(item) {
-	      return item[functionOrKey].apply(item, args);
-	  });
+          return _.map(collection, function(item) {
+              return item[functionOrKey].apply(item, args);
+          });
       }
   };
 
@@ -179,7 +179,7 @@ var _ = { };
   _.reduce = function(collection, iterator, accumulator) {
       var results = accumulator || 0;
       _.each(collection, function (item) {
-	  results = iterator(results, item);
+          results = iterator(results, item);
       });
 
       return results;
@@ -201,36 +201,30 @@ var _ = { };
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
       var someFunc = iterator || _.identity;
+
       return _.reduce( collection, function(allTrue, item) {
-	  return allTrue && Boolean(someFunc(item));
+          return allTrue && Boolean(someFunc(item));
       }, true);
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
-  _.some2 = function(collection, iterator) {
+  _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
       var someFunc = iterator || _.identity;
-      var anyPassed = false;
-      return _.every(collection, function (val) {
-	  if (anyPassed) {
-	      return true;	      
-	  }  else if (someFunc(val)) {
-	      anyPassed = true;
-	      return true;
-	  } else {
-	      return false;
-	  }
+
+      return !_.every(collection, function (val) {
+          return !Boolean(someFunc(val));
       });
-      
+
   };
 
-  _.some = function (collection, iterator) {
+  _.some2 = function (collection, iterator) {
       var truthTest = iterator || _.identity;
       for (var i = 0, len = collection.length; i < len; i++) {
-	  if (Boolean(truthTest(collection[i]))) {
-	      return true
-	  }
+          if (Boolean(truthTest(collection[i]))) {
+              return true
+          }
       }
 
       return false;
@@ -257,11 +251,11 @@ var _ = { };
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
       var args = Array.prototype.slice.call(arguments, 1);
-  
+
       _.each(args, function (value, index) {
-	  _.each(value, function(propertyValue, propertyName) {
-	      obj[propertyName] = propertyValue;	      
-	  });
+          _.each(value, function(propertyValue, propertyName) {
+              obj[propertyName] = propertyValue;
+          });
       });
       return obj;
   };
@@ -272,11 +266,11 @@ var _ = { };
       var args = Array.prototype.slice.call(arguments, 1);
 
       _.each(args, function (passedObj, index) {
-	  _.each(passedObj, function (propValue, propName) {
-	      if (!obj.hasOwnProperty(propName)) {
-		  obj[propName] = propValue;
-	      }
-	  });
+          _.each(passedObj, function (propValue, propName) {
+              if (!obj.hasOwnProperty(propName)) {
+                  obj[propName] = propValue;
+              }
+          });
       });
 
       return obj;
@@ -324,12 +318,12 @@ var _ = { };
       var haveCalculated = {};
 
       return function () {
-	  if (_.contains(haveCalculated, arguments[0])) {
-	      return haveCalculated[arguments[0]];
-	  } else {
-	      haveCalculated[arguments[0]] = func.apply(this, arguments);
-	  }
-	  return haveCalculated[arguments[0]];
+          if (_.contains(haveCalculated, arguments[0])) {
+              return haveCalculated[arguments[0]];
+          } else {
+              haveCalculated[arguments[0]] = func.apply(this, arguments);
+          }
+          return haveCalculated[arguments[0]];
       };
   };
 
@@ -342,7 +336,7 @@ var _ = { };
   _.delay = function(func, wait) {
       var args = Array.prototype.slice.call(arguments, 2);
       setInterval(function() {
-	  func.apply(this, args);	  
+          func.apply(this, args);
       }, wait);
   };
 
@@ -358,8 +352,26 @@ var _ = { };
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
-  };
+      var newArray = Array.prototype.slice.call(array, 0);
+      var length = newArray.length;
 
+      var swapArray = function (indexA, indexB, sarray) {
+          var temp = sarray[indexB];
+          sarray[indexB] = sarray[indexA];
+          sarray[indexA] = temp;
+      };
+
+      var randomGen = function (maxRange) {
+          return Math.floor(Math.random() * maxRange);
+      };
+
+      _.each(newArray, function(value, index, collection) {
+          var randomIndex = randomGen(length);
+          swapArray(index, randomIndex, collection);
+      });
+
+      return newArray;
+  };
 
   /**
    * Note: This is the end of the pre-course curriculum. Feel free to continue,
